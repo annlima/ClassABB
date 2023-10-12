@@ -42,38 +42,38 @@ class ABB {
         y.altura = Math.max(altura(y.izquierda), altura(y.derecha)) + 1;
 
         return y;  // Devolver nueva raíz tras rotación
-    }
+    }   
 
     // Método público para insertar un aula en el árbol
-    public void insert(int capacidad, String detalles) {
-        raiz = insertRec(raiz, new Aula(capacidad, detalles));
+    public void insert(int capacidad, String edificio,int salon, String descripcion, int pc, int proyector, int pizarron) {
+        raiz = insertRec(raiz, new Aula(capacidad, edificio, salon, descripcion, pc, proyector, pizarron));
     }
 
     // Método público para asignar el aula más cercana a la capacidad de estudiantes solicitada
-    public String assignAula(int capacidadEstudiantes) {
-        Aula aulaEncontrada = findClosestMatch(raiz, capacidadEstudiantes);
+    public String assignAula(int capacidadEstudiantes, int pcaula, int proyectoraula, int pizarronaula) {
+        Aula aulaEncontrada = findClosestMatch(raiz, capacidadEstudiantes, pcaula,proyectoraula, pizarronaula);
         if (aulaEncontrada != null) {
             // Si es necesario, aquí se pueden agregar actualizaciones al detalle del aula.
-            return aulaEncontrada.detalles;
+            return aulaEncontrada.descripcion;
         } else {
             return null;
         }
     }
 
     // Función recursiva para buscar el aula más cercana a la capacidad solicitada
-    private Aula findClosestMatch(Nodo nodo, int capacidadEstudiantes) {
+    private Aula findClosestMatch(Nodo nodo, int capacidadEstudiantes, int pcaula, int proyectoraula, int pizarronaula) {
         if (nodo == null) return null;
 
-        if (nodo.aula.capacidad == capacidadEstudiantes) {
+        if (nodo.aula.capacidad == capacidadEstudiantes && nodo.aula.pc == pcaula && nodo.aula.proyector == proyectoraula && nodo.aula.pizarron == pizarronaula) {
             return nodo.aula;
         }
 
         if (nodo.aula.capacidad > capacidadEstudiantes) {
-            Aula leftSearch = findClosestMatch(nodo.izquierda, capacidadEstudiantes);
+            Aula leftSearch = findClosestMatch(nodo.izquierda, capacidadEstudiantes, pcaula,proyectoraula, pizarronaula);
             return (leftSearch != null) ? leftSearch : nodo.aula;
         }
 
-        return findClosestMatch(nodo.derecha, capacidadEstudiantes);
+        return findClosestMatch(nodo.derecha, capacidadEstudiantes, pcaula,proyectoraula, pizarronaula);
     }
     // Función recursiva para insertar un nodo en el árbol AVL
     private Nodo insertRec(Nodo nodo, Aula aula) {
@@ -113,26 +113,28 @@ class ABB {
         return nodo;
     }
     // Método público para encontrar y remover el aula más cercana a la capacidad solicitada
-    public String findAndRemove(int capacidadEstudiantes) {
+    public String findAndRemove(int capacidadEstudiantes, int pc, int proyector, int pizarron) {
         Aula aulaEncontrada = new Aula();
-        raiz = findAndRemoveRec(raiz, capacidadEstudiantes, aulaEncontrada);
-        return aulaEncontrada.detalles;
+        raiz = findAndRemoveRec(raiz, capacidadEstudiantes, aulaEncontrada, pc, proyector, pizarron);
+        return aulaEncontrada.descripcion;
     }
     // Función recursiva para buscar y eliminar el aula más cercana a la capacidad solicitada
-    private Nodo findAndRemoveRec(Nodo nodo, int capacidadEstudiantes, Aula aulaEncontrada) {
+    private Nodo findAndRemoveRec(Nodo nodo, int capacidadEstudiantes, Aula aulaEncontrada, int pc, int proyector, int pizarron) {
         if (nodo == null) return nodo; // no encontramos un aula que cumpla con la capacidad
         // Si encontramos un aula que tiene capacidad suficiente pero no es la más pequeña
         // Guardamos temporalmente y buscamos en el subárbol izquierdo por una mejor opción.
-        if (nodo.aula.capacidad >= capacidadEstudiantes) {
+        if (nodo.aula.capacidad >= capacidadEstudiantes && nodo.aula.pc == pc && nodo.aula.proyector == proyector && nodo.aula.pizarron == pizarron) {
             aulaEncontrada.capacidad = nodo.aula.capacidad;
-            aulaEncontrada.detalles = nodo.aula.detalles;
-            nodo.izquierda = findAndRemoveRec(nodo.izquierda, capacidadEstudiantes, aulaEncontrada);
+            aulaEncontrada.proyector = nodo.aula.proyector;
+            aulaEncontrada.pc = nodo.aula.pc;
+            aulaEncontrada.pizarron = nodo.aula.pizarron;
+            nodo.izquierda = findAndRemoveRec(nodo.izquierda, capacidadEstudiantes, aulaEncontrada, pc, proyector, pizarron);
         } else {
-            nodo.derecha = findAndRemoveRec(nodo.derecha, capacidadEstudiantes, aulaEncontrada);
+            nodo.derecha = findAndRemoveRec(nodo.derecha, capacidadEstudiantes, aulaEncontrada, pc, proyector, pizarron);
         }
 
         // Si no encontramos ningún aula con suficiente capacidad, retornamos null.
-        if (aulaEncontrada.detalles == null) return nodo;
+        if (aulaEncontrada.descripcion == null) return nodo;
 
         // Si el nodo actual coincide con el aula encontrada, lo eliminamos.
         if (nodo.aula.capacidad == aulaEncontrada.capacidad) {
@@ -152,7 +154,7 @@ class ABB {
             } else {
                 // Caso con dos hijos, buscamos el sucesor inorden
                 nodo.aula = minValueNode(nodo.derecha).aula;
-                nodo.derecha = findAndRemoveRec(nodo.derecha, nodo.aula.capacidad, new Aula());
+                nodo.derecha = findAndRemoveRec(nodo.derecha, nodo.aula.capacidad, new Aula(), nodo.aula.pc, nodo.aula.proyector, nodo.aula.pizarron);
             }
         }
 
