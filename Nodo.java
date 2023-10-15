@@ -1,13 +1,15 @@
 // Modelo de un nodo para el Árbol Binario de Búsqueda
 class Nodo {
-    Aula aula; // Datos del nodo (el aula)
-    Nodo izquierda, derecha; // Nodos hijos
-    int altura; // Altura del nodo para mantener el árbol balanceado
+    Aula aula;
+    Nodo izquierda;
+    Nodo derecha;
+    int altura;
 
-    // Constructor del Nodo
-    Nodo(Aula aula) {
+    public Nodo(Aula aula) {
         this.aula = aula;
-        this.altura = 1;  // Por defecto, la altura es 1 al crear el nodo
+        this.altura = 1;  // Al crear un nuevo nodo, su altura es 1.
     }
 }
+
+
 

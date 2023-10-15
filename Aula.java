@@ -1,18 +1,18 @@
 // Modelo de una clase Aula
 class Aula {
-    int capacidad; // Capacidad máxima de estudiantes que puede albergar el aula
-    String edificio; // Edificio del salon
-    int salon; //Numero de salon del edificio
-    String descripcion; // Descripcion del salon
+    int capacidad;
+    String edificio;
+    int salon;
+    String descripcion;
     int pc;
     int proyector;
     int pizarron;
 
+    public Aula() {
+        // Constructor vacío para inicialización
+    }
 
-    Aula() {} // Constructor vacío
-
-    // Constructor con parámetros
-    Aula(int capacidad, String edificio,int salon, String descripcion, int pc, int proyector, int pizarron) {
+    public Aula(int capacidad, String edificio, int salon, String descripcion, int pc, int proyector, int pizarron) {
         this.capacidad = capacidad;
         this.edificio = edificio;
         this.salon = salon;
@@ -20,6 +20,7 @@ class Aula {
         this.pc = pc;
         this.proyector = proyector;
         this.pizarron = pizarron;
-
     }
 }
+
+

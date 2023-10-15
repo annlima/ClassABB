@@ -42,7 +42,7 @@ class ABB {
         y.altura = Math.max(altura(y.izquierda), altura(y.derecha)) + 1;
 
         return y;  // Devolver nueva raíz tras rotación
-    }   
+    }
 
     // Método público para insertar un aula en el árbol
     public void insert(int capacidad, String edificio,int salon, String descripcion, int pc, int proyector, int pizarron) {
